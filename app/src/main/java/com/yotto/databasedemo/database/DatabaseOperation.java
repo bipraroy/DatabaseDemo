@@ -17,6 +17,7 @@ import java.util.List;
 public class DatabaseOperation {
     private Context context;
     public DatabaseOperation(Context context){
+
         this.context = context;
     }
 
@@ -60,6 +61,16 @@ public class DatabaseOperation {
             personList.add(person);
         }
         return personList;
+    }
+
+    public boolean deletePerson(String personName){
+        boolean result = false;
+        SQLiteDatabase db = PersonOpenHelper.getInstance(context).getWritableDatabase();
+        String selection = PersonContract.PersonTable.COLUMN_NAME + " LIKE ?";
+        String[] selectionArgs = {"%"+personName+"%"};
+        result = db.delete(PersonContract.PersonTable.TABLE_NAME,selection,selectionArgs) > 0;
+
+        return result;
     }
 
 
